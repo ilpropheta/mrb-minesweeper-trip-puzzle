@@ -34,6 +34,9 @@ namespace Minesweeper
 
         public void AddLink(MinesweeperNode from, MinesweeperNode to)
         {
+            if (links.ContainsKey(to) && links[to].Contains(from))
+                return;
+               
             // NON-directed link.
             if (!links.ContainsKey(from))
                 links.Add(from, new List<MinesweeperNode>());

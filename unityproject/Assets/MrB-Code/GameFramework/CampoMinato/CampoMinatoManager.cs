@@ -137,7 +137,6 @@ public class CampoMinatoManager : MonoBehaviour
     {
         Debug.Log(string.Format("clicked on {0}", graphNode.label));
         graph.UncoverSafeNodes(graphNode);
-        uiButton.gameObject.GetComponent<Image>().sprite = btn_empty.sprite;
 
         if (graphNode.mined)
         {
@@ -150,7 +149,7 @@ public class CampoMinatoManager : MonoBehaviour
         {
             for (var j=0; j<COLS; ++j)
             {
-                if (matrix[i][j] != null)
+                if (matrix[i][j] != null && !matrix[i][j].mined)
                 {
                     // è stato scoperto?
                     if (!matrix[i][j].covered)
