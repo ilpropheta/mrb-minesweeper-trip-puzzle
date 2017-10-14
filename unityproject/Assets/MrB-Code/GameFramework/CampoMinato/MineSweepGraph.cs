@@ -63,7 +63,7 @@ namespace Minesweeper
             {
                 MinesweeperNode current = frontier.Pop();
 
-                if (!current.mined)
+                if (!current.mined && current.nearMines == 0)
                 {
                     if (!visited.Contains(current))
                     {
