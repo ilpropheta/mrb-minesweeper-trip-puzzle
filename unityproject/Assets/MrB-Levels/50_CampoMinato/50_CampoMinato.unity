@@ -5085,10 +5085,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 796233075}
+  - component: {fileID: 796233079}
   - component: {fileID: 796233078}
   - component: {fileID: 796233077}
   - component: {fileID: 796233076}
-  - component: {fileID: 796233079}
   m_Layer: 5
   m_Name: Button_0_4
   m_TagString: Untagged
@@ -5979,6 +5979,7 @@ GameObject:
   m_Component:
   - component: {fileID: 900654177}
   - component: {fileID: 900654180}
+  - component: {fileID: 900654181}
   - component: {fileID: 900654179}
   - component: {fileID: 900654178}
   m_Layer: 5
@@ -6080,6 +6081,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 900654176}
+--- !u!114 &900654181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 900654176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1227caf9b584d4cbb6ce552e44163a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mina: 1
 --- !u!1 &928810754
 GameObject:
   m_ObjectHideFlags: 0
@@ -12234,6 +12247,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1746652952}
   - component: {fileID: 1746652955}
+  - component: {fileID: 1746652956}
   - component: {fileID: 1746652954}
   - component: {fileID: 1746652953}
   m_Layer: 5
@@ -12335,6 +12349,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1746652951}
+--- !u!114 &1746652956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1746652951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e1227caf9b584d4cbb6ce552e44163a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mina: 1
 --- !u!1 &1750214087
 GameObject:
   m_ObjectHideFlags: 0
@@ -14438,6 +14464,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matrixRoot: {fileID: 1322065499}
+  btn_bomb: {fileID: 953466001}
+  btn_empty: {fileID: 1118023209}
+  btn_flag: {fileID: 1458481210}
+  btn_one: {fileID: 673111912}
+  btn_two: {fileID: 632215539}
+  btn_three: {fileID: 836091035}
+  btn_four: {fileID: 451845442}
 --- !u!1 &2129603782
 GameObject:
   m_ObjectHideFlags: 0
