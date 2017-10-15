@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CellState
+{
+    Mined
+}
+
 public class BottoneCampoMinato : MonoBehaviour
 {
-    public bool mina = false;
+    public CellState state = CellState.Mined;
 }

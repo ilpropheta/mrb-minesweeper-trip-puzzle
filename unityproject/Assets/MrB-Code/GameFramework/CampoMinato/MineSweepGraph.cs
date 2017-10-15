@@ -56,30 +56,42 @@ namespace Minesweeper
                         n.nearMines += 1;
         }
 
+        public void SetFlag(MinesweeperNode source)
+        {
+            source.flag = true;
+        }
+
         public void UncoverSafeNodes(MinesweeperNode source)
         {
+            if (source.flag)
+                return;
+
+            source.covered = false;
+
             Stack<MinesweeperNode> frontier = new Stack<MinesweeperNode>();
             HashSet<MinesweeperNode> visited = new HashSet<MinesweeperNode>();
             frontier.Push(source);
-            source.covered = false;
 
             while (frontier.Count != 0)
             {
                 MinesweeperNode current = frontier.Pop();
 
-                if (!current.mined && current.nearMines == 0)
+                if (!current.mined && !current.flag)
                 {
-                    if (!visited.Contains(current))
+                    if (current.nearMines == 0)
                     {
-                        visited.Add(current);
-                        current.covered = false;
-                        foreach (MinesweeperNode near in links[current])
-                            frontier.Push(near);
+                        if (!visited.Contains(current))
+                        {
+                            visited.Add(current);
+                            current.covered = false;
+                            foreach (MinesweeperNode near in links[current])
+                                frontier.Push(near);
+                        }
                     }
-                }
-                else if (!current.mined && current.nearMines > 0)
-                {
-                    current.covered = false;
+                    else
+                    {
+                        current.covered = false;
+                    }
                 }
             }
         }
