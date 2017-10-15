@@ -9659,7 +9659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1436362534
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13909,6 +13909,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1943786466}
+--- !u!114 &1965958006 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11425512, guid: 4c4d43d8b5aaf9d4b8333b19f4a22305,
+    type: 2}
+  m_PrefabInternal: {fileID: 2007190414}
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &1972751711
 GameObject:
   m_ObjectHideFlags: 0
@@ -14097,6 +14103,10 @@ Prefab:
     - target: {fileID: 22449530, guid: 4c4d43d8b5aaf9d4b8333b19f4a22305, type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11454752, guid: 4c4d43d8b5aaf9d4b8333b19f4a22305, type: 2}
+      propertyPath: m_Text
+      value: Fly
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4c4d43d8b5aaf9d4b8333b19f4a22305, type: 2}
@@ -14477,14 +14487,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matrixRoot: {fileID: 1322065499}
-  btn_covered: {fileID: 1402246030}
-  btn_bomb: {fileID: 953466001}
-  btn_empty: {fileID: 1118023209}
-  btn_flag: {fileID: 1458481210}
-  btn_one: {fileID: 673111912}
-  btn_two: {fileID: 632215539}
-  btn_three: {fileID: 836091035}
-  btn_four: {fileID: 451845442}
+  img_covered: {fileID: 1402246030}
+  img_bomb: {fileID: 953466001}
+  img_empty: {fileID: 1118023209}
+  img_flag: {fileID: 1458481210}
+  img_one: {fileID: 673111912}
+  img_two: {fileID: 632215539}
+  img_three: {fileID: 836091035}
+  img_four: {fileID: 451845442}
+  btn_submit: {fileID: 1965958006}
 --- !u!1 &2129603782
 GameObject:
   m_ObjectHideFlags: 0

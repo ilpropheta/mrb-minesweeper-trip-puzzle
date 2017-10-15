@@ -10,19 +10,20 @@ public class CampoMinatoManager : MonoBehaviour
 
     // 8x17 (with holes)
     public GameObject matrixRoot;
+    public Image img_covered;
+    public Image img_bomb;
+    public Image img_empty;
+    public Image img_flag;
+    public Image img_one;
+    public Image img_two;
+    public Image img_three;
+    public Image img_four;
+    public Button btn_submit;
+
     Minesweeper.MinesweeperGraph graph = new Minesweeper.MinesweeperGraph();
     Minesweeper.MinesweeperNode[][] matrix = new Minesweeper.MinesweeperNode[ROWS][];
     Button[][] buttonsMatrix = new Button[ROWS][];
     bool isLosing = false; // ekt, forgive me and do this better
-
-    public Image btn_covered;
-    public Image btn_bomb;
-    public Image btn_empty;
-    public Image btn_flag;
-    public Image btn_one;
-    public Image btn_two;
-    public Image btn_three;
-    public Image btn_four;
 
     void AddConnection(int from_I, int from_J, int to_I, int to_J)
     {
@@ -37,6 +38,8 @@ public class CampoMinatoManager : MonoBehaviour
             matrix[i] = new Minesweeper.MinesweeperNode[COLS];
             buttonsMatrix[i] = new Button[COLS];
         }
+
+        btn_submit.onClick.AddListener(SubmitSolution);
 
         string pattern = @"^Button_(\d+)_(\d+)$";
         var buttons = matrixRoot.GetComponentsInChildren<Button>();
@@ -113,6 +116,27 @@ public class CampoMinatoManager : MonoBehaviour
         graph.ComputeNearMines();
     }
 
+    void SubmitSolution()
+    {
+        bool won = true;
+        ChangeElements((node, button) =>
+        {
+            // you win when the only covered nodes are mined
+            if (node.covered && !node.mined)
+                won = false;
+        });
+
+        if (won)
+        {
+            // handle logic
+            Debug.Log("hai vinto");
+        }
+        else
+        {
+            Debug.Log("non hai vinto");
+        }
+    }
+
     void SetSpriteTo(Button button, Image image)
     {
         button.GetComponent<Image>().sprite = image.sprite;
@@ -130,37 +154,37 @@ public class CampoMinatoManager : MonoBehaviour
 
         if (node.covered)
         {
-            SetSpriteTo(uiButton, btn_covered);
+            SetSpriteTo(uiButton, img_covered);
         }
         else
         {
             if (node.flag)
             {
-                SetSpriteTo(uiButton, btn_flag);
+                SetSpriteTo(uiButton, img_flag);
             }
             else if (node.mined)
             {
-                SetSpriteTo(uiButton, btn_bomb);
+                SetSpriteTo(uiButton, img_bomb);
             }
             else if (node.nearMines == 1)
             {
-                SetSpriteTo(uiButton, btn_one);
+                SetSpriteTo(uiButton, img_one);
             }
             else if (node.nearMines == 2)
             {
-                SetSpriteTo(uiButton, btn_two);
+                SetSpriteTo(uiButton, img_two);
             }
             else if (node.nearMines == 3)
             {
-                SetSpriteTo(uiButton, btn_three);
+                SetSpriteTo(uiButton, img_three);
             }
             else if (node.nearMines == 4)
             {
-                SetSpriteTo(uiButton, btn_four);
+                SetSpriteTo(uiButton, img_four);
             }
             else
             {
-                SetSpriteTo(uiButton, btn_empty);
+                SetSpriteTo(uiButton, img_empty);
             }
         }
     }
