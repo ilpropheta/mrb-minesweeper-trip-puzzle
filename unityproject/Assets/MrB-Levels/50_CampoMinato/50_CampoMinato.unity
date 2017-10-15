@@ -14477,6 +14477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matrixRoot: {fileID: 1322065499}
+  btn_covered: {fileID: 1402246030}
   btn_bomb: {fileID: 953466001}
   btn_empty: {fileID: 1118023209}
   btn_flag: {fileID: 1458481210}

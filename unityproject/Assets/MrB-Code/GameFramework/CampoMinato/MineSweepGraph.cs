@@ -61,6 +61,7 @@ namespace Minesweeper
             Stack<MinesweeperNode> frontier = new Stack<MinesweeperNode>();
             HashSet<MinesweeperNode> visited = new HashSet<MinesweeperNode>();
             frontier.Push(source);
+            source.covered = false;
 
             while (frontier.Count != 0)
             {
@@ -75,6 +76,10 @@ namespace Minesweeper
                         foreach (MinesweeperNode near in links[current])
                             frontier.Push(near);
                     }
+                }
+                else if (!current.mined && current.nearMines > 0)
+                {
+                    current.covered = false;
                 }
             }
         }

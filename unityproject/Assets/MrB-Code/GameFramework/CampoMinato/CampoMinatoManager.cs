@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 
@@ -13,7 +13,9 @@ public class CampoMinatoManager : MonoBehaviour
     Minesweeper.MinesweeperGraph graph = new Minesweeper.MinesweeperGraph();
     Minesweeper.MinesweeperNode[][] matrix = new Minesweeper.MinesweeperNode[ROWS][];
     Button[][] buttonsMatrix = new Button[ROWS][];
+    bool isLosing = false; // ekt, forgive me and do this better
 
+    public Image btn_covered;
     public Image btn_bomb;
     public Image btn_empty;
     public Image btn_flag;
@@ -28,30 +30,9 @@ public class CampoMinatoManager : MonoBehaviour
         //Debug.Log(string.Format("Connection: {0} {1} - {2} {3}", from_I, from_J, to_I, to_J));
     }
 
-    Sprite NumberOfBombsToSprite(Minesweeper.MinesweeperNode node)
+    void Start()
     {
-        if (node.nearMines == 1)
-        {
-            return btn_one.sprite;
-        }
-        if (node.nearMines == 2)
-        {
-            return btn_two.sprite;
-        }
-        if (node.nearMines == 3)
-        {
-            return btn_three.sprite;
-        }
-        if (node.nearMines == 4)
-        {
-            return btn_four.sprite;
-        }
-        return null;
-    }
-
-    void Start ()
-    {
-        for(var i=0; i<matrix.Length; ++i)
+        for (var i = 0; i < matrix.Length; ++i)
         {
             matrix[i] = new Minesweeper.MinesweeperNode[COLS];
             buttonsMatrix[i] = new Button[COLS];
@@ -62,7 +43,7 @@ public class CampoMinatoManager : MonoBehaviour
         foreach (var button in buttons)
         {
             var name = button.gameObject.name;
-            
+
             var res = Regex.Split(name, pattern);
             int row = int.Parse(res[1]);
             int col = int.Parse(res[2]);
@@ -78,39 +59,38 @@ public class CampoMinatoManager : MonoBehaviour
             matrix[row][col] = graphNode;
             buttonsMatrix[row][col] = button;
 
-            //Debug.Log(string.Format("{0} {1}", row, col));
             button.onClick.AddListener(() =>
             {
                 OnButtonClick(button, graphNode);
             });
         }
 
-        for (var i=0; i<matrix.Length; ++i)
+        for (var i = 0; i < matrix.Length; ++i)
         {
-            for(var j=0; j<matrix[i].Length; ++j)
+            for (var j = 0; j < matrix[i].Length; ++j)
             {
                 if (matrix[i][j] != null)
                 {
-                    if (i!=0 && matrix[i-1][j] != null) // prev row exists
+                    if (i != 0 && matrix[i - 1][j] != null) // prev row exists
                     {
                         AddConnection(i, j, i - 1, j); // top, center
 
-                        if (j!=0 && matrix[i-1][j - 1] != null)
+                        if (j != 0 && matrix[i - 1][j - 1] != null)
                         {
-                            AddConnection(i, j, i - 1, j-1); // top, left
+                            AddConnection(i, j, i - 1, j - 1); // top, left
                         }
-                        if (j < matrix[i].Length-1 && matrix[i - 1][j + 1] != null)
+                        if (j < matrix[i].Length - 1 && matrix[i - 1][j + 1] != null)
                         {
                             AddConnection(i, j, i - 1, j + 1); // top, right
                         }
                     }
-                    if (i < matrix.Length - 1 && matrix[i+1][j] != null) // next row exists
+                    if (i < matrix.Length - 1 && matrix[i + 1][j] != null) // next row exists
                     {
                         AddConnection(i, j, i + 1, j); // bottom, center
 
                         if (j != 0 && matrix[i + 1][j - 1] != null)
                         {
-                            AddConnection(i, j, i + 1, j-1); // bottom, left
+                            AddConnection(i, j, i + 1, j - 1); // bottom, left
                         }
                         if (j < matrix[i].Length - 1 && matrix[i + 1][j + 1] != null)
                         {
@@ -126,46 +106,126 @@ public class CampoMinatoManager : MonoBehaviour
                         AddConnection(i, j, i, j - 1); // left, center
                     }
                 }
-                
+
             }
         }
 
         graph.ComputeNearMines();
-	}
-	
-    void OnButtonClick(Button uiButton, Minesweeper.MinesweeperNode graphNode)
-    {
-        Debug.Log(string.Format("clicked on {0}", graphNode.label));
-        graph.UncoverSafeNodes(graphNode);
+    }
 
-        if (graphNode.mined)
+    void SetSpriteTo(Button button, Image image)
+    {
+        button.GetComponent<Image>().sprite = image.sprite;
+    }
+
+    void UpdateSpriteAccordingToNodeProperties(int i, int j)
+    {
+        var node = matrix[i][j];
+        var uiButton = buttonsMatrix[i][j];
+        if (node == null || uiButton == null)
         {
-            uiButton.gameObject.GetComponent<Image>().sprite = btn_bomb.sprite;
-            // sconfitta
+            Debug.Log(string.Format("Strange...requested to change sprite of {0} {1}. It's null", i, j));
             return;
         }
 
-        for (var i=0; i<ROWS; ++i)
+        if (node.covered)
         {
-            for (var j=0; j<COLS; ++j)
+            SetSpriteTo(uiButton, btn_covered);
+        }
+        else
+        {
+            if (node.flag)
             {
-                if (matrix[i][j] != null && !matrix[i][j].mined)
+                SetSpriteTo(uiButton, btn_flag);
+            }
+            else if (node.mined)
+            {
+                SetSpriteTo(uiButton, btn_bomb);
+            }
+            else if (node.nearMines == 1)
+            {
+                SetSpriteTo(uiButton, btn_one);
+            }
+            else if (node.nearMines == 2)
+            {
+                SetSpriteTo(uiButton, btn_two);
+            }
+            else if (node.nearMines == 3)
+            {
+                SetSpriteTo(uiButton, btn_three);
+            }
+            else if (node.nearMines == 4)
+            {
+                SetSpriteTo(uiButton, btn_four);
+            }
+            else
+            {
+                SetSpriteTo(uiButton, btn_empty);
+            }
+        }
+    }
+
+    void ChangeElements(System.Action<Minesweeper.MinesweeperNode, Button> action)
+    {
+        for (var i = 0; i < ROWS; ++i)
+        {
+            for (var j = 0; j < COLS; ++j)
+            {
+                if (matrix[i][j] != null)
                 {
-                    // è stato scoperto?
-                    if (!matrix[i][j].covered)
-                    {
-                        Debug.Log(string.Format("{0} {1} scoperto", i, j));
-                        buttonsMatrix[i][j].gameObject.GetComponent<Image>().sprite = btn_empty.sprite;
-                    }
-                    if (matrix[i][j].nearMines > 0)
-                    {
-                        Debug.Log(string.Format("{0} {1} ha {2}", i, j, matrix[i][j].nearMines));
-                        buttonsMatrix[i][j].gameObject.GetComponent<Image>().sprite = NumberOfBombsToSprite(matrix[i][j]);
-                    }
+                    action(matrix[i][j], buttonsMatrix[i][j]);
+                    UpdateSpriteAccordingToNodeProperties(i, j);
                 }
             }
         }
     }
 
-	
+    void ResetMatch()
+    {
+        isLosing = false;
+        ChangeElements((node, button) =>
+        {
+            node.covered = true;
+        });
+    }
+
+    void ShowAllBombs()
+    {
+        ChangeElements((node, button) =>
+        {
+            if (node.mined)
+                node.covered = false;
+        });
+    }
+
+    void UpdateMatrixRendering()
+    {
+        ChangeElements((node, button) => { });
+    }
+
+    IEnumerator FadeResetMatrix()
+    {
+        yield return new WaitForSeconds(3);
+        ResetMatch();
+    }
+
+    void OnButtonClick(Button uiButton, Minesweeper.MinesweeperNode graphNode)
+    {
+        if (!isLosing) // again, please ekt do this better
+        {
+            graph.UncoverSafeNodes(graphNode);
+            UpdateMatrixRendering();
+
+            // sconfitta
+            if (graphNode.mined)
+            {
+                isLosing = true;
+                ShowAllBombs();
+                StartCoroutine(FadeResetMatrix());
+                return;
+            }
+        }
+    }
+
+
 }
